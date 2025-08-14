@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface DocumentService {
 
-    public MultiLangDocument save(MultiLangDocument doc);
+    public MultiLangDocument save(DocumentDTO dto);
     public List<MultiLangDocument> search(String q, String lang, int size);
     public List<MultiLangDocument> searchBySimpleText();
 }

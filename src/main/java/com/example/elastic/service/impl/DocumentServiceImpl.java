@@ -14,6 +14,7 @@ import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +35,20 @@ public class DocumentServiceImpl implements DocumentService {
         this.mapStruct = mapStruct;
     }
 
-    public MultiLangDocument save(MultiLangDocument doc) {
-        return repository.save(doc);
+    public MultiLangDocument save(DocumentDTO dto)  {
+        validateDocument(dto);
+        MultiLangDocument entity = new MultiLangDocument();
+        entity.setIdentifier(dto.getIdentifier());
+        entity.setBody(dto.getBody());
+        return repository.save(entity);
+    }
+    private void validateDocument(DocumentDTO dto) {
+        if (dto.getIdentifier() == null || dto.getIdentifier().isBlank()) {
+            throw new IllegalArgumentException("Identifier should not be empty");
+        }
+        if (dto.getBody() == null) {
+            throw new IllegalArgumentException("Body can't be null or blank");
+        }
     }
 
     public List<MultiLangDocument> search(String q, String lang, int size) {

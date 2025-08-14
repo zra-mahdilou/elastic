@@ -6,6 +6,9 @@ public class DocumentDTO {
     private String identifier;
     private Map<String, String> body;
 
+    public <K, V> DocumentDTO(String id1, Map<K,V> en) {
+    }
+
     public String getIdentifier() {
         return identifier;
     }
