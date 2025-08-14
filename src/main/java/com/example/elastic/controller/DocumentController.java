@@ -22,13 +22,12 @@ public class DocumentController {
 
     @PostMapping
     public ResponseEntity<?> saveDocument(@RequestBody DocumentDTO document) {
-        if (document.getIdentifier() == null || document.getIdentifier().isBlank()) {
-            return ResponseEntity.badRequest().body("identifier should not be empty");
+        try {
+            MultiLangDocument saved = documentService.save(document);
+            return ResponseEntity.created(URI.create("/documents/" + saved.getIdentifier())).body(saved);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
-        if (document.getBody() == null) {
-            return ResponseEntity.badRequest().body("body can't be null");
-        }
-        return ResponseEntity.ok("saved");
     }
 
 
